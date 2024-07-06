@@ -43,6 +43,23 @@ Create professional pages (full responsive) using content blocks.
 - PHP 8.2
 - Full responsive template (backend and frontend)
 
+## Installation
+NuraWeb utilizes Composer to manage its dependencies. So, before using NuraWeb, make sure you have Composer installed on your machine.
+
+You can install NuraWeb by issuing the Composer create-project command in your terminal:
+
+```composer create-project nurasoftware/nura-web --prefer-dist mywebsite```
+
+After creating the project move to the project folder eg: cd mywebsite and run the command to set up database, configuration files, setup default language and create the initial admin account:
+
+```php artisan nura:install```
+
+Run this command to generate a fresh application key:
+```php artisan key:generate```
+
+Install is done. You can login as administrator:
+```https://your-website-url/login```
+
 ## License
 
 NuraWeb is open-sourced software licensed under the [GPL-3.0 license](https://opensource.org/license/gpl-3-0).
