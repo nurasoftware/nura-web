@@ -60,6 +60,10 @@ Run this command to generate a fresh application key:
 Install is done. You can login as administrator:
 ```https://your-website-url/login```
 
+## Requirements
+Laravel 11
+PHP >=8.2
+
 ## License
 
 NuraWeb is open-sourced software licensed under the [GPL-3.0 license](https://opensource.org/license/gpl-3-0).
