@@ -39,7 +39,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'nura:install';
+    protected $signature = 'app:install';
 
     /**
      * The console command description.
