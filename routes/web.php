@@ -21,10 +21,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Language;
-use App\Http\Controllers\Web\HomeController as WebHomeController;
-use App\Http\Controllers\Web\PageController as WebPageController;
-use App\Http\Controllers\Web\ContactController as WebContactController;
-use App\Http\Controllers\Web\ToolsController as WebToolsController;
+use App\Http\Controllers\Web\ContactController as ContactController;
+use App\Http\Controllers\Web\HomeController as HomeController;
+use App\Http\Controllers\Web\PageController as PageController;
+use App\Http\Controllers\Web\PostController as PostController;
+use App\Http\Controllers\Web\ToolsController as ToolsController;
 
 Route::get('/account', function () {
     if (Auth::user()) {
@@ -34,7 +35,7 @@ Route::get('/account', function () {
 
 
 // Maintenance
-Route::get('/maintenance-mode', [WebToolsController::class, 'maintenance'])->name('maintenance');
+Route::get('/maintenance-mode', [ToolsController::class, 'maintenance'])->name('maintenance');
 
 
 
@@ -43,31 +44,45 @@ foreach (Language::get_active_languages() as $language) {
         // DEFAULT LANGUAGE 
 
         // Homepage
-        Route::get('/', [WebHomeController::class, 'index'])->name('home');
+        Route::get('/', [HomeController::class, 'index'])->name('home');
 
         // Contact page
-        Route::get('/contact', [WebContactController::class, 'index'])->name('contact');
-        Route::post('contact', [WebContactController::class, 'store']);
+        Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+        Route::post('contact', [ContactController::class, 'store']);
+
+        // Posts            
+        Route::get((config('nura.posts_slug') ?? 'blog') . '/s', [PostController::class, 'search'])->name('posts.search');
+        Route::get((config('nura.posts_slug') ?? 'blog') . '/tag/{slug}', [PostController::class, 'tag'])->where(['slug' => '[a-zA-Z0-9_-]+'])->name('posts.tag');
+        Route::get((config('nura.posts_slug') ?? 'blog') . '/{categ_slug}/{slug}', [PostController::class, 'show'])->where(['categ_slug' => '[a-z0-9_-]+'])->where(['slug' => '[a-z0-9_-]+'])->name('post');
+        Route::get((config('nura.posts_slug') ?? 'blog'), [PostController::class, 'index'])->name('posts');
+        Route::get((config('nura.posts_slug') ?? 'blog') . '/{categ_slug}', [PostController::class, 'categ'])->where(['categ_slug' => '[a-z0-9_-]+'])->name('posts.categ');
 
         // Static page with parent
-        Route::get('{parent_slug}/{slug}', [WebPageController::class, 'show'])->name('child_page')->where(['parent_slug' => '[a-z0-9_-]{3,}+', 'slug' => '[a-z0-9_-]+']); // if page is a child of a parent page
+        Route::get('{parent_slug}/{slug}', [PageController::class, 'show'])->name('child_page')->where(['parent_slug' => '[a-z0-9_-]{3,}+', 'slug' => '[a-z0-9_-]+']); // if page is a child of a parent page
 
         // Static Page
-        Route::get('{slug}', [WebPageController::class, 'show'])->name('page')->where(['slug' => '[a-z0-9_-]{3,}+']);
+        Route::get('{slug}', [PageController::class, 'show'])->name('page')->where(['slug' => '[a-z0-9_-]{3,}+']);
     } else {
         // OTHER LANGUAGES
 
         // Homepage
-        Route::get("/{$language->code}", [WebHomeController::class, 'index'])->name("home.{$language->code}");
+        Route::get("/{$language->code}", [HomeController::class, 'index'])->name("home.{$language->code}");
 
         // Contact page
-        Route::get("{$language->code}/contact", [WebContactController::class, 'index'])->name("contact.{$language->code}");
-        Route::post("{$language->code}/contact", [WebContactController::class, 'store']);
+        Route::get("{$language->code}/contact", [ContactController::class, 'index'])->name("contact.{$language->code}");
+        Route::post("{$language->code}/contact", [ContactController::class, 'store']);
+
+        // Posts            
+        Route::get("{$language->code}/" . (config('nura.posts_slug') ?? 'blog') . '/s', [PostController::class, 'search'])->name("posts.search.{$language->code}");
+        Route::get("{$language->code}/" . (config('nura.posts_slug') ?? 'blog') . '/tag/{slug}', [PostController::class, 'tag'])->where(['slug' => '[a-zA-Z0-9_-]+'])->name("posts.tag.{$language->code}");
+        Route::get("{$language->code}/" . (config('nura.posts_slug') ?? 'blog') . '/{categ_slug}/{slug}', [PostController::class, 'show'])->where(['categ_slug' => '[a-z0-9_-]+'])->where(['slug' => '[a-z0-9_-]+'])->name("post.{$language->code}");
+        Route::get("{$language->code}/" . (config('nura.posts_slug') ?? 'blog'), [PostController::class, 'index'])->name("posts.{$language->code}");
+        Route::get("{$language->code}/" . (config('nura.posts_slug') ?? 'blog') . '/{categ_slug}', [PostController::class, 'categ'])->where(['categ_slug' => '[a-z0-9_-]+'])->name("posts.categ.{$language->code}");
 
         // Static page with parent
-        Route::get("{$language->code}/{parent_slug}/{slug}", [WebPageController::class, 'show'])->name("child_page.{$language->code}")->where(['parent_slug' => '[a-z0-9_-]{3,}+', 'slug' => '[a-z0-9_-]+']); // if page is a child of a parent page
+        Route::get("{$language->code}/{parent_slug}/{slug}", [PageController::class, 'show'])->name("child_page.{$language->code}")->where(['parent_slug' => '[a-z0-9_-]{3,}+', 'slug' => '[a-z0-9_-]+']); // if page is a child of a parent page
 
         // Static Page
-        Route::get("{$language->code}/{slug}", [WebPageController::class, 'show'])->name("page.{$language->code}")->where(['slug' => '[a-z0-9_-]{3,}+']);
+        Route::get("{$language->code}/{slug}", [PageController::class, 'show'])->name("page.{$language->code}")->where(['slug' => '[a-z0-9_-]{3,}+']);
     }
 }
