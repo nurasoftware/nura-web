@@ -35,7 +35,7 @@ class CreateAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-admin';
+    protected $signature = 'nura:create-admin';
 
     /**
      * The console command description.
