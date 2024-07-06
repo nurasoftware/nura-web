@@ -1,0 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+ 
+.style_footer2 { background-color: white; color: black; font-family: 'Open Sans', sans-serif; font-size: 1rem; text-align: left; font-weight: normal; } .style_footer2 a { color: blue; text-decoration: none; font-weight: normal; text-decoration-thickness: auto !important; 
+                    text-underline-offset: auto !important; } .style_footer2 a:hover { color: blue!important; text-decoration: none; } .style_footer2 a:focus { color: blue!important; text-decoration: none!important; } .style_footer2 .title { font-size: 1.2rem; font-weight: normal; } .style_global { background-color: white; color: black; font-family: 'Open Sans', sans-serif; font-size: 1rem; } .style_global a { color: blue; text-decoration: none; font-weight: normal; text-decoration-thickness: auto !important; 
+                    text-underline-offset: auto !important; } .style_global a:hover { color: blue; text-decoration: none; } .style_global a:focus { color: blue; text-decoration: none!important; } 
