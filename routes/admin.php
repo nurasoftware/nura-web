@@ -28,6 +28,9 @@ use App\Http\Controllers\Admin\ConfigController as ConfigController;
 use App\Http\Controllers\Admin\ContactController as ContactController;
 use App\Http\Controllers\Admin\LangController as LangController;
 use App\Http\Controllers\Admin\PageController as PageController;
+use App\Http\Controllers\Admin\PostController as PostController;
+use App\Http\Controllers\Admin\PostCategController as PostCategController;
+use App\Http\Controllers\Admin\PostTagController as PostTagController;
 use App\Http\Controllers\Admin\ProfileController as ProfileController;
 use App\Http\Controllers\Admin\ThemeController as ThemeController;
 use App\Http\Controllers\Admin\ThemeFooterController as ThemeFooterController;
@@ -57,6 +60,20 @@ Route::prefix('account/admin')->name('admin.')->group(function () {
     Route::delete('pages/{id}/content/delete/{block_id}', [PageController::class, 'content_destroy'])->name('pages.content.delete')->where('id', '[0-9]+')->where('block_id', '[0-9]+');
     Route::post('pages/{id}/sortable', [PageController::class, 'sortable'])->name('pages.sortable')->where('id', '[0-9]+');
     Route::post('pages/{id}/ajaxPublishSwitch', [PageController::class, 'ajaxPublishSwitch'])->name('pages.ajaxPublishSwitch')->where('id', '[0-9]+');
+
+    // Posts                
+    Route::get('posts/config', [PostController::class, 'config'])->name('posts.config');
+    Route::post('posts/config', [PostController::class, 'update_config']);
+
+    Route::resource('posts', PostController::class)->parameters(['posts' => 'id']);
+    Route::post('posts/{id}/sortable', [PostController::class, 'sortable'])->name('posts.sortable')->where('id', '[0-9]+');
+    Route::get('posts/{id}/content', [PostController::class, 'content'])->name('posts.content')->where('id', '[0-9]+');
+    Route::post('posts/{id}/content', [PostController::class, 'update_content'])->name('posts.content.new')->where('id', '[0-9]+');
+    Route::delete('posts/{id}/content/delete/{block_id}', [PostController::class, 'delete_content'])->name('posts.content.delete')->where('id', '[0-9]+')->where('block_id', '[0-9]+');
+    Route::get('posts/{id}/delete-main-image', [PostController::class, 'delete_main_image'])->name('posts.delete_main_image')->where('id', '[0-9]+');
+
+    Route::resource('posts-categ', PostCategController::class)->names(['index' => 'posts.categ', 'create' => 'posts.categ.create', 'show' => 'posts.categ.show'])->parameters(['posts-categ' => 'id']);
+    Route::resource('posts-tags', PostTagController::class)->names(['index' => 'posts.tags', 'create' => 'posts.tags.create', 'show' => 'posts.tags.show'])->parameters(['posts-tags' => 'id']);
 
     // Profile
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
