@@ -1,4 +1,8 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://cdn.nurasoftware.com/img/logo/nuraweb/logo-bg-white.png" alt="NuraWeb Logo"></a></p>
+<p align="center"><a href="https://nuraweb.com" target="_blank"><img src="https://cdn.nurasoftware.com/img/logo/nuraweb/logo-bg-white.png" alt="NuraWeb Logo"></a></p>
+
+<p><b>High performance website builder for businesses, companies, presentation websites or personal websites. Create a websites in just a few hours, without any development knowledge.</b></p>
+
+Author: [Gabriel Chimilevschi](https://github.com/chimilevschi)
 
 ## About NuraWeb
 
@@ -23,3 +27,5 @@ Technical details:
 ## License
 
 NuraWeb is open-sourced software licensed under the [GPL-3.0 license](https://opensource.org/license/gpl-3-0).
+
+NuraWeb is powered by [Nura Software](https://nurasoftware.com)
