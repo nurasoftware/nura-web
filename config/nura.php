@@ -37,7 +37,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Content blocks
+    | Content blocks for pages
     |--------------------------------------------------------------------------
     |
     */
@@ -130,6 +130,54 @@ return [
             'icon' => '<i class="bi bi-code"></i>'
         ],
     ],
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Content blocks for posts (blog)
+    |--------------------------------------------------------------------------
+    |
+    */
+    'posts_blocks' => [
+        'text' => [
+            'label' => 'Simple text',
+            'icon' => '<i class="bi bi-file-text"></i>'
+        ],
+        'editor' => [
+            'label' => 'Text Editor / HTML',
+            'icon' => '<i class="bi bi-textarea-t"></i>'
+        ],
+        'image' => [
+            'label' => 'Image / Banner',
+            'icon' => '<i class="bi bi-image"></i>'
+        ],
+        'gallery' => [
+            'label' => 'Images gallery',
+            'icon' => '<i class="bi bi-images"></i>'
+        ],
+        'video' => [
+            'label' => 'Video',
+            'icon' => '<i class="bi bi-play-btn"></i>'
+        ],
+        'custom' => [
+            'label' => 'Custom',
+            'icon' => '<i class="bi bi-code"></i>'
+        ],
+        'accordion' => [
+            'label' => 'Accordion',
+            'icon' => '<i class="bi bi-menu-up"></i>'
+        ],
+        'alert' => [
+            'label' => 'Alert',
+            'icon' => '<i class="bi bi-exclamation-square"></i>'
+        ],
+        'blockquote' => [
+            'label' => 'Blockquote',
+            'icon' => '<i class="bi bi-chat-left-quote"></i>'
+        ],        
+    ],
+
 
 
     'defaults' => [

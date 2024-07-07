@@ -18,17 +18,14 @@ debug_backtrace() || die('Direct access not permitted');
                     <p>{{ __('Click to add a content block') }}</p>
 
                     <div class="row">
-                        @foreach ($types_block as $block)
+                        @foreach (config('nura.posts_blocks') as $key => $type)
                             <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6 col-12 mb-4">
-                                <input type="radio" name="block_type_id" class="radio input-hidden" id="block_{{ $block->id }}" value="{{ $block->id }}" required />
-                                <label for="block_{{ $block->id }}">
+                                <input type="radio" name="type" class="radio input-hidden" id="block_{{ $key }}" value="{{ $key }}" required />
+                                <label for="block_{{ $key }}">
                                     <div class='text-center'>
-                                        <div class="fs-2">{!! $block->icon !!}</div>
-                                        <div class="mb-2 fs-5">
-                                            {{ $block->label }}
-                                        </div>
-                                        <div>
-                                            <div class="form-text">{{ $block->description }}</div>
+                                        <div class="fs-1">{!! $type['icon'] !!}</div>
+                                        <div class="mb-2">
+                                            {{ $type['label'] }}
                                         </div>
                                     </div>
                                 </label>
@@ -39,9 +36,10 @@ debug_backtrace() || die('Direct access not permitted');
                     <div class="form-text">{{ __('You can manage block content and settings after you att this block') }}</div>
 
                 </div>
-                
+
                 <div class="modal-footer">
-                    <input id="hidden_area_block" type="hidden" name="column" value="">
+                    <input type="hidden" name="module" value="posts">
+                    <input type="hidden" name="content_id" value="{{ $post->id ?? null }}">
                     <button type="submit" class="btn btn-primary">{{ __('Add block') }}</button>
                 </div>
 

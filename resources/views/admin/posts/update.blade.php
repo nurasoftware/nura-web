@@ -161,7 +161,6 @@
                             <select class="form-select form-select-lg" name="status">
                                 <option @if ($post->status == 'published') selected @endif value="published">{{ __('Published') }}</option>
                                 <option @if ($post->status == 'draft') selected @endif value="draft">{{ __('Draft') }}</option>
-                                <option @if ($post->status == 'pending') selected @endif value="pending">{{ __('Pending') }}</option>
                             </select>
                             </select>
                         </div>
@@ -185,27 +184,7 @@
                             <label>{{ __('Tags') }}</label>
                             <input type="text" class="form-control tagsinput" name="tags" id="tags" placeholder='{{ __('Write some tags') }}' value="{{ $post->tags }}">
                         </div>
-
-
-                        <div class="form-check">
-                            <input id="checkbox_disable_likes" type="checkbox" name="disable_likes" class="form-check-input" @if ($post->disable_likes == 1) checked @endif>
-                            <label for="checkbox_disable_likes" class="custom-control-label"> {{ __('Disable likes') }}</label>
-                        </div>
-                        @if (!($config->posts_likes_enabled ?? null))
-                            <div class="small text-danger mb-2">
-                                {{ __('Warning! Likes system is disabled.') }} <a href="{{ route('admin.posts.config') }}">{{ __('Change') }}</a>
-                            </div>
-                        @endif
-
-                        <div class="form-check">
-                            <input id="checkbox_disable_comments" type="checkbox" name="disable_comments" class="form-check-input" @if ($post->disable_comments == 1) checked @endif>
-                            <label for="checkbox_disable_comments" class="custom-control-label"> {{ __('Disable comments') }}</label>
-                        </div>
-                        @if (!($config->posts_comments_enabled ?? null))
-                            <div class="small text-danger mb-2">
-                                {{ __('Warning! Comments system is disabled.') }} <a href="{{ route('admin.posts.config') }}">{{ __('Change') }}</a>
-                            </div>
-                        @endif
+                        
 
                         <div class="form-check">
                             <input id="checkbox_featured" type="checkbox" name="featured" class="form-check-input" aria-describedby="featuredHelp" @if ($post->featured == 1) checked @endif>

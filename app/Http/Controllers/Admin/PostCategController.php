@@ -25,7 +25,7 @@ use App\Models\Post;
 use App\Models\PostCateg;
 use App\Models\Upload;
 use App\Models\Language;
-use App\Models\TemplateMenu;
+use App\Models\ThemeMenu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -195,7 +195,7 @@ class PostCategController extends Controller
         PostCateg::recount_all_categs_items();
 
         // regenerate menu links (if menu contains categories)
-        TemplateMenu::generate_menu_links();
+        ThemeMenu::generate_menu_links();
 
         return redirect(route('admin.posts.categ'))->with('success', 'updated');
     }

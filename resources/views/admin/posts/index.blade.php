@@ -126,7 +126,6 @@
                     <select name="search_status" class="form-select me-2 mb-2 @if ($search_status) is-valid @endif">
                         <option value="">- {{ __('Any status') }} -</option>
                         <option @if ($search_status == 'active') selected @endif value="active">{{ __('Published') }}</option>
-                        <option @if ($search_status == 'pending') selected @endif value="pending">{{ __('Pending review') }}</option>
                         <option @if ($search_status == 'draft') selected @endif value="draft">{{ __('Draft') }}</option>
                     </select>
                 </div>
@@ -166,7 +165,6 @@
                             <th width="180">{{ __('Language') }}</th>
                         @endif
                         <th width="320">{{ __('Author') }}</th>
-                        <th width="170">{{ __('Interractions') }}</th>
                         <th width="150">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
@@ -240,31 +238,7 @@
                                 <span class="float-start me-2"><img style="max-width:50px; height:auto;" class="rounded-circle" src="{{ avatar($post->user_id) }}" /></span>
                                 <b><a target="_blank" href="{{ route('admin.accounts.show', ['id' => $post->user_id]) }}">{{ $post->author->name }}</a></b>
                                 <br>{{ $post->author->email }}
-                            </td>
-
-                            <td>
-                                @if ($post->likes_count > 0)
-                                    <a href="{{ route('admin.posts.likes', ['search_post_id' => $post->id]) }}"><i class="bi bi-hand-thumbs-up"></i> {{ $post->likes_count ?? 0 }}
-                                        {{ __('likes') }}</a>
-                                @else
-                                    <i class="bi bi-hand-thumbs-up"></i> {{ __('No like') }}
-                                @endif
-                                <div class="mb-2"></div>
-                                @if ($post->comments_count > 0)
-                                    <div class="mt-2"><a href="{{ route('admin.posts.comments', ['search_post_id' => $post->id]) }}"><i class="bi bi-chat-dots"></i>
-                                            {{ $post->comments_count ?? 0 }} {{ __('comments') }}</a>
-                                    </div>
-                                @else
-                                    <i class="bi bi-chat-dots"></i> {{ __('No comment') }}
-                                @endif
-
-                                @if ($post->disable_comments)
-                                    <div class="mt-2 text-danger small">{{ __('Comments disabled') }}</div>
-                                @endif
-                                @if ($post->disable_likes)
-                                    <div class="mt-2 text-danger small">{{ __('Likes disabled') }}</div>
-                                @endif
-                            </td>
+                            </td>                            
 
                             <td>
                                 <div class="d-grid gap-2">

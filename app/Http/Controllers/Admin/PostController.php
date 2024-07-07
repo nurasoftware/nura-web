@@ -140,8 +140,7 @@ class PostController extends Controller
 
         return view('admin.index', [
             'view_file' => 'posts.create',
-            'active_menu' => 'website',
-            'active_submenu' => 'posts',
+            'active_menu' => 'posts',
             'categories' => $categories,
             'all_tags' => $all_tags ?? null,
             'langs' => Language::get_languages(),
@@ -191,8 +190,6 @@ class PostController extends Controller
             'search_terms' => $request->search_terms,
             'meta_title' => $request->meta_title,
             'meta_description' => $request->meta_description,
-            'disable_comments' => $request->has('disable_comments') ? 1 : 0,
-            'disable_likes' => $request->has('disable_likes') ? 1 : 0,
             'featured' => $request->has('featured') ? 1 : 0,
         ]);
 
@@ -223,18 +220,7 @@ class PostController extends Controller
 
         $post = Post::with('author', 'category')->find($request->id);
         if (!$post) return redirect(route('admin.posts.index'));
-
-        //$tags_array = PostTagItem::with('post_tag')->where('post_id', $request->id)->get();
-        //$tags = implode(", ", $tags_array);
-
-        /*
-        $categories = PostCateg::whereNull('parent_id')
-            ->with('childCategories')
-            ->leftJoin('sys_lang', 'posts_categ.lang_id', '=', 'sys_lang.id')
-            ->select('posts_categ.*', 'sys_lang.name as lang_name', 'sys_lang.code as lang')
-            ->orderBy('title')->get();
-        */
-
+      
         $author_count_published_posts = Post::where('user_id', $post->user_id)->where('status', 'active')->count();
         $author_count_pending_posts = Post::where('user_id', $post->user_id)->where('status', 'pending')->count();
 
@@ -243,8 +229,7 @@ class PostController extends Controller
 
         return view('admin.index', [
             'view_file' => 'posts.update',
-            'active_menu' => 'website',
-            'active_submenu' => 'posts',
+            'active_menu' => 'posts',
             'post_menu' => 'details',
             'post' => $post,
             'tags' => $tags_array ?? null,
@@ -312,8 +297,6 @@ class PostController extends Controller
             'search_terms' => $request->search_terms,
             'meta_title' => $request->meta_title,
             'meta_description' => $request->meta_description,
-            'disable_comments' => $request->has('disable_comments') ? 1 : 0,
-            'disable_likes' => $request->has('disable_likes') ? 1 : 0,
             'featured' => $request->has('featured') ? 1 : 0,
             'minutes_to_read' => Post::estimated_reading_time($request->id),
             'updated_by_user_id' => Auth::user()->id,
@@ -366,14 +349,12 @@ class PostController extends Controller
         }
 
         Post::where('id', $request->id)->delete(); // delete post
-        PostComment::where('post_id', $request->id)->delete(); // delete comments
-        PostLike::where('post_id', $request->id)->delete(); // delete likes
         PostTag::where('post_id', $request->id)->delete(); // delete tags    
 
         PostCateg::recount_categ_items($post->categ_id);
         */
 
-        Post::where('id', $request->id)->update(['deleted_at' => now()]); // move to recycle bin
+        Post::where('id', $request->id)->delete(); // soft delete
 
         return redirect(route('admin.posts.index'))->with('success', 'deleted');
     }
@@ -408,8 +389,7 @@ class PostController extends Controller
 
         return view('admin.index', [
             'view_file' => 'posts.content',
-            'active_menu' => 'website',
-            'active_submenu' => 'posts',
+            'active_menu' => 'posts',
             'menu_section' => 'posts',
             'post_menu' => 'content',
             'post' => $post,
@@ -510,8 +490,7 @@ class PostController extends Controller
 
         return view('admin.index', [
             'view_file' => 'posts.config',
-            'active_menu' => 'website',
-            'active_submenu' => 'posts',
+            'active_menu' => 'posts',
             'menu_section' => 'config',
             'langs' => Language::get_languages(),
             'seo_configs' => $seo_configs,
@@ -528,10 +507,7 @@ class PostController extends Controller
         if (config('app.demo_mode')) return redirect(route('admin'))->with('error', 'demo');
 
         Config::update_config('posts_per_page', $request->posts_per_page);
-        Config::update_config('posts_comments_antispam_enabled', $request->posts_comments_antispam_enabled);
-        Config::update_config('posts_likes_enabled', $request->posts_likes_enabled);
-        Config::update_config('posts_comments_enabled', $request->posts_comments_enabled);
-        Config::update_config('posts_comments_fb_enabled', $request->posts_comments_fb_enabled);
+        Config::update_config('posts_addtoany_share_enabled', $request->posts_addtoany_share_enabled);
 
         $langs = Language::get_languages();
         foreach ($langs as $lang) {

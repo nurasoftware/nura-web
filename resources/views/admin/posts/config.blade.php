@@ -57,55 +57,17 @@
                     <div class="col-12">
                         <div class="form-group mt-3 mb-0">
                             <div class="form-check form-switch">
-                                <input type='hidden' value='' name='posts_comments_antispam_enabled'>
-                                <input class="form-check-input" type="checkbox" id="posts_comments_antispam_enabled" name="posts_addthis_share_enabled" @if ($config->posts_addthis_share_enabled ?? null) checked @endif
-                                    @if (!($config->addthis_code_enabled ?? null)) disabled @endif>
-                                <label class="form-check-label" for="posts_comments_antispam_enabled">{{ __('Enable AddThis share buttons') }}</label>
+                                <input type='hidden' value='' name='posts_addtoany_share_enabled'>
+                                <input class="form-check-input" type="checkbox" id="posts_addtoany_share_enabled" name="posts_addtoany_share_enabled" @if ($config->posts_addtoany_share_enabled ?? null) checked @endif
+                                    @if (!($config->addtoany_enabled ?? null)) disabled @endif>
+                                <label class="form-check-label" for="posts_addtoany_share_enabled">{{ __('Enable AddToAny share buttons') }}</label>
                             </div>
-                            @if (!($config->addthis_code_enabled ?? null))
-                                <div class="form-text text-danger">{{ __('AddThis disabled') }}. <a href="{{ route('admin.config', ['module' => 'integration']) }}">{{ __('Change') }}</a></div>
+                            @if (!($config->addtoany_enabled ?? null))
+                                <div class="form-text text-danger">{{ __('AddToAny disabled') }}. <a href="{{ route('admin.config', ['module' => 'integration']) }}">{{ __('Change') }}</a></div>
                             @endif
-                            <div class="form-text">{{ __('You can use AddThis to add social share buttons in your articles or pages. ') }}</div>
+                            <div class="form-text">{{ __('You can use AddToAny to add social share buttons in your posts.') }}</div>
                         </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-group mt-3 mb-0">
-                            <div class="form-check form-switch">
-                                <input type='hidden' value='' name='posts_likes_enabled'>
-                                <input class="form-check-input" type="checkbox" id="posts_likes_enabled" name="posts_likes_enabled" @if ($config->posts_likes_enabled ?? null) checked @endif>
-                                <label class="form-check-label" for="posts_likes_enabled">{{ __('Enable like system') }}</label>
-                            </div>
-                            <div class="form-text">{{ __('This will enable likes for all posts. Note: You can enable or disable likes for each post') }}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-group mt-3 mb-0">
-                            <div class="form-check form-switch">
-                                <input type='hidden' value='' name='posts_comments_enabled'>
-                                <input class="form-check-input" type="checkbox" id="posts_comments_enabled" name="posts_comments_enabled" @if ($config->posts_comments_enabled ?? null) checked @endif>
-                                <label class="form-check-label" for="posts_comments_enabled">{{ __('Enable comments system') }}</label>
-                            </div>
-                            <div class="form-text">{{ __('This will enable comments for all posts. Note: You can enable or disable comments for each post') }}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-group mt-3 mb-0">
-                            <div class="form-check form-switch">
-                                <input type='hidden' value='' name='posts_comments_fb_enabled'>
-                                <input class="form-check-input" type="checkbox" id="posts_comments_fb_enabled" name="posts_comments_fb_enabled" @if ($config->posts_comments_fb_enabled ?? null) checked @endif
-                                    @if (!($config->facebook_app_id ?? null)) disabled @endif>
-                                <label class="form-check-label" for="posts_comments_fb_enabled">{{ __('Enable Facebook comments') }}</label>
-                            </div>
-                            @if (!($config->facebook_app_id ?? null))
-                                <div class="form-text text-danger">{{ __('Facebook App ID is not set') }}. <a href="{{ route('admin.config', ['module' => 'integration']) }}">{{ __('Change') }}</a></div>
-                            @endif
-                            <div class="form-text">{{ __('You can use Facebook comments widget to add comments in your articles.') }}</div>
-                        </div>
-                    </div>
-
+                    </div>                   
                 </div>
 
             </div>

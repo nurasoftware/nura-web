@@ -108,17 +108,7 @@
                         <div class="form-group">
                             <label>{{ __('Tags') }}</label>
                             <input id="tags" name='tags' class='form-control' placeholder='{{ __('Write some tags') }}' value=''>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="disable_comments" id="checkbox_disable_comments">
-                            <label class="form-check-label" for="checkbox_disable_comments">{{ __('Disable comments') }}</label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="disable_ratings" id="checkbox_disable_ratings">
-                            <label class="form-check-label" for="checkbox_disable_ratings">{{ __('Disable likes') }}</label>
-                        </div>
+                        </div>                     
 
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="featured" id="checkbox_featured">
@@ -168,13 +158,11 @@
                             </div>
                         </div>
 
-
-
                         <hr>
 
                         <button type="submit" class="btn btn-gear">{{ __('Save and add content') }}</button>
 
-                        <div class="text-muted mt-3 small"><i class="bi bi-info-circle"></i> {{ __('Post will be saved as draft. After you add content  block, you can publish the post.') }}</div>
+                        <div class="text-muted mt-3 small"><i class="bi bi-info-circle"></i> {{ __('Post will be saved as draft. You can publish the post after you add content blocks.') }}</div>
 
 
                     </div>
@@ -188,39 +176,6 @@
     </form>
 
 @endif
-
-{{--
-<script>
-    var tagslist = '';
-    $(document).ready(function() {
-        $.ajax({
-            url: "{{ route('admin.ajax', ['source' => 'test']) }}",
-            'success': function (data) {
-                tagslist = data;
-
-                // load tags for searching
-                var input = document.querySelector('input[name="tags"]');
-                var tagify1 = new Tagify(input, {
-                    tagTextProp: 'name',                    
-                    delimiters: null,
-                    whitelist: tagslist,
-                    editTags: false,
-                    dropdown: {
-                        mapValueTo: 'name',
-                        searchKeys: ['name'],
-                        maxItems: 20,           // <- maximum allowed rendered suggestions
-                        classname: 'tags-look', // <- custom classname for this dropdown, so it could be targeted
-                        enabled: 0,             // <- show suggestions on focus
-                        closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
-                    },
-                });
-            }
-        });
-    })
-    
-</script>
---}}
-
 
 <script>
     $(document).ready(function() {

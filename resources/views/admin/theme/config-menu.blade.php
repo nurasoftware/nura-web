@@ -123,11 +123,11 @@
 
                                     @if ($link->type == 'contact')
                                         @if ($lang->id == get_default_language()->id)
-                                            <a target="_blank" href="{{ route('contact') }}">{{ route('home') }}</a>
+                                            <a target="_blank" href="{{ route('contact') }}">{{ route('contact') }}</a>
                                         @else
-                                            <a target="_blank" href="{{ route('contact.' . $lang->code) }}">{{ route('home.' . $lang->code) }}</a>
+                                            <a target="_blank" href="{{ route('contact.' . $lang->code) }}">{{ route('contact.' . $lang->code) }}</a>
                                         @endif
-                                     
+
                                         @if (($config->module_contact ?? null) != 'active')
                                             <div class="fw-bold text-danger mb-3">
                                                 <i class="bi bi-info-circle"></i> {{ __('Contact page is not available on website because this module is not active.') }} <a
@@ -135,12 +135,20 @@
                                             </div>
                                         @endif
                                     @endif
-                                    
+
                                     @if ($link->type == 'page')
                                         @php
                                             $link_url = page((int) $link->value, $lang->id)->url;
                                         @endphp
                                         <a target="_blank" href="{{ $link_url }}">{{ $link_url }}</a>
+                                    @endif
+
+                                    @if ($link->type == 'posts')
+                                        @if ($lang->id == get_default_language()->id)
+                                            <a target="_blank" href="{{ route('posts') }}">{{ route('posts') }}</a>
+                                        @else
+                                            <a target="_blank" href="{{ route('posts.' . $lang->code) }}">{{ route('posts.' . $lang->code) }}</a>
+                                        @endif
                                     @endif
 
                                     <div class="mb-2"></div>
@@ -156,6 +164,8 @@
                                     {{ __('Contact page') }}
                                 @elseif($link->type == 'page')
                                     {{ __('Page') }}
+                                @elseif ($link->type == 'posts')
+                                    {{ __('Blog section') }}
                                 @elseif($link->type == 'dropdown')
                                     <a class="btn btn-primary mb-2" href="{{ route('admin.theme.menu.dropdown', ['link_id' => $link->id]) }}">{{ __('Manage dropdown links') }}</a>
                                     {{ __('Dropdown menu') }}
