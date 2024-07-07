@@ -29,6 +29,7 @@ use App\Models\ThemeButton;
 use App\Models\Config;
 use App\Models\Page;
 use App\Models\PageContent;
+use App\Models\User;
 use App\Models\Language;
 use Artisan;
 
@@ -57,22 +58,44 @@ class Install extends Command
     {
         // Migrate tables
         Artisan::call("migrate --path=/database/migrations");
-        $this->info('Tables installed!');
+        $this->info('Database tables updated!');
 
-        // Add default language (english)
+        // Add default admin (if no admin is added)
+        if (User::where('role', 'admin')->doesntExist()) {
+            $admin_name = $this->askValid('Input administrator full name: ', 'admin_name', ['required', 'min:3']);
+            $admin_email = $this->askValid('Input administrator email: ', 'admin_email', ['required', 'email']);
+            $admin_pass = $this->askValid('Input administrator password: ', 'admin_pass', ['required', 'min:8']);
+
+            $this->line('Adding administrator account');
+            User::updateOrInsert(['email' => $admin_email], [
+                'name' => $admin_name ?? 'Admin',
+                'email' => $admin_email,
+                'role' => 'admin',
+                'password' => Hash::make($admin_pass),
+                'email_verified_at' => now(),
+                'created_at' => now(),
+            ]);
+            $this->info('The admin was added!');
+        }
+
+
+        // Add a default language 
         if (Language::where('is_default', 1)->doesntExist()) {
-            $lang = Language::create([
-                'name' => 'English',
-                'code' => 'en',
-                'locale' => 'en_US',
+            $lang_name = $this->askValid('Input default language name: ', 'lang_name', ['required', 'min:3']);
+            $lang_code = $this->askValid('Input default language code (2 characters): ', 'lang_code', ['required', 'min:2', 'max:2']);
+
+            $this->line('Adding default language');
+            Language::create([                
+                'name' => $lang_name,
+                'code' => $lang_code,
                 'status' => 'active',
-                'timezone' => 'Europe/London',
                 'dir' => 'ltr',
-                'site_label' => 'NuraWeb Website',
+                'site_label' => config('app.name'),
                 'is_default' => 1,
             ]);
             $this->info('Default language added');
         }
+       
 
         // Get default language
         $default_lang = Language::get_default_language();
@@ -142,7 +165,6 @@ class Install extends Command
             $this->info('Homepage added in navigation menu');
         } else $this->info('Homepage exists in navigation menu');
 
-
         // Website is in maintenance mode by default        
         Config::update_config('website_maintenance_enabled', 'on');
         Config::update_config('website_maintenance_text', '<h1>Website under construction</h1>
@@ -153,5 +175,31 @@ class Install extends Command
         $this->info('Website maintenance mode OK');
 
         $this->info('WEBSITE INSTALLED.');
+    }
+
+    protected function askValid($question, $field, $rules)
+    {
+        $value = $this->ask($question);
+
+        if ($message = $this->validateInput($rules, $field, $value)) {
+            $this->error($message);
+
+            return $this->askValid($question, $field, $rules);
+        }
+
+        return $value;
+    }
+
+    protected function validateInput($rules, $fieldName, $value)
+    {
+        $validator = Validator::make([
+            $fieldName => $value
+        ], [
+            $fieldName => $rules
+        ]);
+
+        return $validator->fails()
+            ? $validator->errors()->first($fieldName)
+            : null;
     }
 }

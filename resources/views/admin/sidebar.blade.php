@@ -34,6 +34,13 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item @if (($active_menu ?? null) == 'posts') active @endif">
+                    <a href="{{ route('admin.posts.index') }}" class='sidebar-link'>
+                        <i class="bi bi-file-text"></i>
+                        <span>{{ __('Blog / Articles') }}</span>
+                    </a>
+                </li>
+                
                 <li class="sidebar-item @if (($active_menu ?? null) == 'contact') active @endif">
                     <a href="{{ route('admin.contact') }}" class='sidebar-link'>
                         <i class="bi bi-envelope"></i>

@@ -38,7 +38,7 @@ class ProfileController extends Controller
     public function index()
     {
         return view('admin.index', [
-            'view_file' => 'core.profile',
+            'view_file' => 'tools.profile',
             'active_menu' => 'dashboard',
             'pagename' => 'Profile',
         ]);

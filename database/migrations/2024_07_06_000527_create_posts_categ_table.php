@@ -30,20 +30,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role', 25)
-                ->after('email')
-                ->default('user');
-
-            $table->string('avatar', 200)
-                ->after('role')
-                ->nullable();
-
-            $table->timestamp('last_activity_at')
-                ->after('avatar')
-                ->nullable();
-
-            $table->softDeletes();
+        Schema::create('posts_categ', function (Blueprint $table) {
+            $table->id();
+            $table->smallInteger('lang_id')->nullable();
+            $table->integer('parent_id')->nullable();
+            $table->string('tree_ids', 250)->nullable();
+            $table->string('title', 150);
+            $table->string('slug', 150);
+            $table->text('description')->nullable();
+            $table->tinyInteger('active');
+            $table->smallInteger('position')->nullable();
+            $table->text('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->string('icon', 250)->nullable();
+            $table->integer('count_items')->nullable();
+            $table->integer('count_tree_items')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -52,8 +54,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['role', 'avatar', 'last_activity_at', 'deleted_at']);
-        });
+        Schema::dropIfExists('posts_categ');
     }
 };

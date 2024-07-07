@@ -11,11 +11,6 @@
     </div>
 </div>
 
-@if ($config->contact_page_disabled ?? null)
-    <div class="alert alert-light fw-bold text-danger"><i class="bi bi-info-circle"></i> {{ __('Contact page is disabled.') }} <a href="{{ route('admin.config', ['module' => 'contact']) }}">{{ __('Change') }}</a></div>
-@endif
-
-
 <div class="card">
 
     <div class="card-header">
