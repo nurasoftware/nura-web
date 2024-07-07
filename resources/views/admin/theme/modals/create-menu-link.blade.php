@@ -32,6 +32,7 @@ debug_backtrace() || die('Direct access not permitted');
                                         <option value="dropdown">{{ __('Dropdown menu') }}</option>
                                     @endif
                                     <option value="page">{{ __('Page') }}</option>
+                                    <option value="posts">{{ __('Blog section') }}</option>
                                     <option value="custom">{{ __('Custom link') }}</option>
 
                                 </select>

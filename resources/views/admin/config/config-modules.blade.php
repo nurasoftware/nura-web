@@ -47,14 +47,12 @@
                     <div class="alert alert-light">
                         <b>{{ __('Active') }}</b>: {{ __('Module is enabled.') }}
                         <br>
-                        <b>{{ __('Inactive') }}</b>: {{ __('Module is disabled.') }}                        
+                        <b>{{ __('Inactive') }}</b>: {{ __('Module is disabled.') }}
                         <br>
-                        {{ __('Note: administrators and internal users (with module permission) have access to manage inactive modules, but the module is disabled on website.') }}  
+                        {{ __('Note: administrators and internal users (with module permission) have access to manage inactive modules, but the module is disabled on website.') }}
                     </div>
                 </div>
 
-
-                {{--
                 <div class="row mb-4">
                     <div class="col-md-6 col-lg-5 col-xl-4 col-xxl-3">
                         <div class="form-group mb-1">
@@ -73,7 +71,6 @@
                         </div>
                     </div>
                 </div>
-                --}}
 
                 <div class="row mb-4">
                     <div class="col-md-6 col-lg-5 col-xl-4 col-xxl-3">
@@ -93,7 +90,7 @@
                         </div>
                     </div>
                 </div>
-                            
+
                 <div class="col-12">
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>

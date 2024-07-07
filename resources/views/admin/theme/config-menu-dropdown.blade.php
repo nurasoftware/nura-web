@@ -87,9 +87,9 @@
                             </td>
 
                             <td>
-                                @foreach ($langs as $lang)
+                                @foreach ($languages as $lang)
                                     <b>
-                                        @if (count($langs) > 1)
+                                        @if (count($languages) > 1)
                                             {!! flag($lang->code) !!}
                                         @endif
                                         @if (!get_menu_link_label($link->id, $lang->id))
@@ -101,17 +101,30 @@
                                     <br>
 
                                     @if ($link->type == 'home')
-                                        <a target="_blank"
-                                            href="{{ route('home', ['lang' => $lang->id == default_lang()->id ? null : $lang->code]) }}">{{ route('home', ['lang' => $lang->id == default_lang()->id ? null : $lang->code]) }}</a>
+                                        @if ($lang->id == get_default_language()->id)
+                                            <a target="_blank" href="{{ route('home') }}">{{ route('home') }}</a>
+                                        @else
+                                            <a target="_blank" href="{{ route('home.' . $lang->code) }}">{{ route('home.' . $lang->code) }}</a>
+                                        @endif
                                     @endif
 
                                     @if ($link->type == 'custom')
                                         <a target="_blank" href="{{ $link->value }}">{{ $link->value }}</a>
                                     @endif
-                                 
+
                                     @if ($link->type == 'contact')
-                                        <a target="_blank"
-                                            href="{{ route('contact', ['lang' => $lang->id == default_lang()->id ? null : $lang->code]) }}">{{ route('contact', ['lang' => $lang->id == default_lang()->id ? null : $lang->code]) }}</a>
+                                        @if ($lang->id == get_default_language()->id)
+                                            <a target="_blank" href="{{ route('contact') }}">{{ route('contact') }}</a>
+                                        @else
+                                            <a target="_blank" href="{{ route('contact.' . $lang->code) }}">{{ route('contact.' . $lang->code) }}</a>
+                                        @endif
+
+                                        @if (($config->module_contact ?? null) != 'active')
+                                            <div class="fw-bold text-danger mb-3">
+                                                <i class="bi bi-info-circle"></i> {{ __('Contact page is not available on website because this module is not active.') }} <a
+                                                    href="{{ route('admin.config', ['module' => 'modules']) }}">{{ __('Change') }}</a>
+                                            </div>
+                                        @endif
                                     @endif
 
                                     @if ($link->type == 'page')
@@ -119,9 +132,18 @@
                                             $link_url = page((int) $link->value, $lang->id)->url;
                                         @endphp
                                         <a target="_blank" href="{{ $link_url }}">{{ $link_url }}</a>
-                                    @endif                                   
+                                    @endif
+
+                                    @if ($link->type == 'posts')
+                                        @if ($lang->id == get_default_language()->id)
+                                            <a target="_blank" href="{{ route('posts') }}">{{ route('posts') }}</a>
+                                        @else
+                                            <a target="_blank" href="{{ route('posts.' . $lang->code) }}">{{ route('posts.' . $lang->code) }}</a>
+                                        @endif
+                                    @endif
+
                                     <div class="mb-2"></div>
-                                @endforeach
+                                @endforeach                               
                             </td>
 
                             <td>
@@ -130,9 +152,11 @@
                                 @elseif($link->type == 'custom')
                                     {{ __('Custom link') }}
                                 @elseif($link->type == 'contact')
-                                    {{ __('Contact page') }}                               
+                                    {{ __('Contact page') }}
                                 @elseif($link->type == 'page')
                                     {{ __('Page') }}
+                                @elseif ($link->type == 'posts')
+                                    {{ __('Blog section') }}
                                 @elseif($link->type == 'dropdown')
                                     <a class="btn btn-primary mb-2" href="{{ route('admin.theme.menu.dropdown', ['link_id' => $link->id]) }}">{{ __('Manage dropdown links') }}</a>
                                     {{ __('Dropdown menu') }}

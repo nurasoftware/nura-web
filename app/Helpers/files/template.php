@@ -31,6 +31,7 @@ use App\Models\Block;
 use App\Models\BlockContent;
 use App\Models\Page;
 use App\Models\PageContent;
+use App\Models\PostCateg;
 use App\Models\Language;
 
 if (!function_exists('thumb')) {

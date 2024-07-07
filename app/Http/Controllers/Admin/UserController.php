@@ -55,7 +55,7 @@ class UserController extends Controller
                 ->orWhere('users.email', 'like', "%$search_terms%");
         });
 
-        $accounts = $accounts->orderByDesc('is_owner')->orderByDesc('id')->paginate(20);
+        $accounts = $accounts->orderByDesc('id')->paginate(20);
 
         return view('admin.index', [
             'view_file' => 'accounts.index',

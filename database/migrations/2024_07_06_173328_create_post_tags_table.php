@@ -30,20 +30,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role', 25)
-                ->after('email')
-                ->default('user');
+        Schema::create('post_tags', function (Blueprint $table) {
+            $table->id();
+            $table->string('tag', 200);
+            $table->string('slug', 200);
+            $table->unsignedBigInteger('lang_id');
+            $table->integer('counter')->default(0);
 
-            $table->string('avatar', 200)
-                ->after('role')
-                ->nullable();
-
-            $table->timestamp('last_activity_at')
-                ->after('avatar')
-                ->nullable();
-
-            $table->softDeletes();
+            $table->foreign('lang_id')->references('id')->on('languages')->onDelete('cascade');
         });
     }
 
@@ -52,8 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['role', 'avatar', 'last_activity_at', 'deleted_at']);
-        });
+        Schema::dropIfExists('post_tags');
     }
 };

@@ -38,6 +38,7 @@ debug_backtrace() || die('Direct access not permitted');
                                         <option @if ($link->type == 'dropdown') selected @endif value="dropdown">{{ __('Dropdown menu') }}</option>
                                     @endif
                                     <option @if ($link->type == 'page') selected @endif value="page">{{ __('Page') }}</option>
+                                    <option @if ($link->type == 'posts') selected @endif value="posts">{{ __('Blog section') }}</option>
                                     <option @if ($link->type == 'custom') selected @endif value="custom">{{ __('Custom link') }}</option>
                                 </select>
                             </div>
