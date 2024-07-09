@@ -63,9 +63,6 @@
         <form method="post">
             @csrf
 
-
-
-
             <div class="row">
                 <div class="col-md-6 col-12">
                     <div class="card bg-light p-3 mb-3">
@@ -209,14 +206,25 @@
 
                         <div id="hidden_div_show_custom_text" style="display: @if ($config->contact_custom_text ?? null) block @else none @endif" class="mt-2">
 
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>{{ __('Text content') }} </label>
-                                        <textarea name="contact_custom_text" class="form-control trumbowyg">{{ $config->contact_custom_text ?? null }}</textarea>
+                            @foreach ($contact_custom_text as $lang_contact_text)
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>
+                                                @if (count($languages) > 1)
+                                                    {!! flag($lang_contact_text['lang']->code) !!}
+                                                    @endif {{ __('Text content') }} @if (count($languages) > 1)
+                                                        -
+                                                        {{ $lang_contact_text['lang']->name }} @if ($lang_contact_text['lang']->is_default)
+                                                            ({{ __('default language') }})
+                                                        @endif
+                                                    @endif
+                                            </label>
+                                            <textarea name="contact_custom_text_{{ $lang_contact_text['lang']->id }}" class="form-control trumbowyg">{{ $lang_contact_text['content'] ?? null }}</textarea>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
 
                             <hr>
                             <div class="col-12 col-md-6 col-lg-6 col-xl-4">

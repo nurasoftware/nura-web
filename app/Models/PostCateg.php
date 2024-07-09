@@ -50,7 +50,7 @@ class PostCateg extends Model
 
     public function getUrlAttribute()
     {
-        if ($this->lang_id == get_default_language()->id)
+        if ($this->lang_id == Language::get_default_language()->id)
             $post_url = route('posts.categ', ['categ_slug' => $this->slug]);
         else {
             $lang = Language::where('id', $this->lang_id)->first();

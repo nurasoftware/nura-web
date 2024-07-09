@@ -6,7 +6,7 @@
             <nav aria-label="breadcrumb" class="breadcrumb-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin') }}">{{ __('Dashboard') }}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.template') }}">{{ __('Template builder') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.theme') }}">{{ __('Template builder') }}</a></li>
                 </ol>
             </nav>
         </div>
@@ -21,7 +21,7 @@
         <div class="row">
 
             <div class="col-12">
-                @include('admin.template.includes.menu-template')
+                @include('admin.theme.includes.menu-theme')
             </div>
 
         </div>
@@ -32,7 +32,7 @@
     <div class="card-body">
 
         <div class="mb-3">
-            @include('admin.template.includes.menu-template-edit')
+            @include('admin.theme.includes.menu-theme-edit')
         </div>
 
         @if ($message = Session::get('success'))
@@ -102,16 +102,7 @@
                                     <option @if (($config->tpl_posts_show_date ?? null) == 'datetime') selected @endif value="datetime">{{ __('Date and time') }}</option>
                                     <option @if (($config->tpl_posts_show_date ?? null) == '') selected @endif value="">{{ __('Do not show') }}</option>
                                 </select>
-                            </div>
-
-                            <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                                <label>{{ __('Display article author') }}</label>
-                                <select name="tpl_posts_show_author" class="form-select">
-                                    <option @if (($config->tpl_posts_show_author ?? null) == 'name') selected @endif value="name">{{ __('Author name only') }}</option>
-                                    <option @if (($config->tpl_posts_show_author ?? null) == 'name_avatar') selected @endif value="name_avatar">{{ __('Author name and avatar') }}</option>
-                                    <option @if (($config->tpl_posts_show_author ?? null) == 'no') selected @endif value="no">{{ __('Do not show') }}</option>
-                                </select>
-                            </div>
+                            </div>                           
 
                             <div class="form-group col-lg-4 col-md-6 col-sm-12">
                                 <label>{{ __('Article summary') }}</label>
@@ -172,15 +163,7 @@
                                 <input class="form-check-input" type="checkbox" id="tpl_posts_show_time_read" name="tpl_posts_show_time_read" @if ($config->tpl_posts_show_time_read ?? null) checked @endif>
                                 <label class="form-check-label" for="tpl_posts_show_time_read">{{ __('Show time to read') }}</label>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="form-check form-switch">
-                                <input type='hidden' value='' name='tpl_posts_show_likes_count'>
-                                <input class="form-check-input" type="checkbox" id="tpl_posts_show_likes_count" name="tpl_posts_show_likes_count" @if ($config->tpl_posts_show_likes_count ?? null) checked @endif>
-                                <label class="form-check-label" for="tpl_posts_show_likes_count">{{ __('Show likes counter') }}</label>
-                            </div>
-                        </div>
+                        </div>                      
 
                         <div class="form-group mb-0">
                             <div class="form-check form-switch">
@@ -302,67 +285,13 @@
                     </div>
 
                     <div class="card bg-light p-3 mb-3">
-
-
                         <div class="form-group">
                             <div class="form-check form-switch">
                                 <input type='hidden' value='' name='tpl_posts_container_fluid'>
                                 <input class="form-check-input" type="checkbox" id="tpl_posts_container_fluid" name="tpl_posts_container_fluid" @if ($config->tpl_posts_container_fluid ?? null) checked @endif>
                                 <label class="form-check-label" for="tpl_posts_container_fluid">{{ __('Use fluid width (full width) for posts pages') }}</label>
                             </div>
-                        </div>
-
-                        <div class="fw-bold fs-5">{{ __('Posts layouts') }}</div>
-
-                        <div class="text-muted mb-3">
-                            {{ __('You can add content sections (above or below the main content) or sidebars using layouts.') }}
-                            <a target="_blank" href="{{ route('admin.template.layouts') }}"><b>{{ __('Manage layouts') }}</b></a>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label>{{ __('Posts main page layout') }}</label>
-                                    <select name="tpl_posts_home_layout_id" class="form-select">
-                                        <option value="">- {{ __('Default (full width)') }} -</option>
-                                        @foreach ($layouts as $layout)
-                                            <option value="{{ $layout->id }}" @if (($config->tpl_posts_home_layout_id ?? null) == $layout->id) selected @endif>
-                                                {{ $layout->label }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label>{{ __('Posts categories pages layout') }}</label>
-                                    <select name="tpl_posts_categ_layout_id" class="form-select">
-                                        <option value="">- {{ __('Default (full width)') }} -</option>
-                                        @foreach ($layouts as $layout)
-                                            <option value="{{ $layout->id }}" @if (($config->tpl_posts_categ_layout_id ?? null) == $layout->id) selected @endif>
-                                                {{ $layout->label }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-12">
-                                <div class="form-group">
-                                    <label>{{ __('Post details page layout') }}</label>
-                                    <select name="tpl_posts_post_layout_id" class="form-select">
-                                        <option value="">- {{ __('Default (full width)') }} -</option>
-                                        @foreach ($layouts as $layout)
-                                            <option value="{{ $layout->id }}" @if (($config->tpl_posts_post_layout_id ?? null) == $layout->id) selected @endif>
-                                                {{ $layout->label }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
+                        </div>                                         
                     </div>
 
 

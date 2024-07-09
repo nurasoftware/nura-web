@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ $lang ?? 'en' }}" dir="{{ $config->site_text_dir ?? 'ltr' }}">
+<html lang="{{ $locale }}" dir="{{ $site_text_dir }}">
 
 <head>
 

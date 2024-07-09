@@ -149,6 +149,13 @@
                                         @else
                                             <a target="_blank" href="{{ route('posts.' . $lang->code) }}">{{ route('posts.' . $lang->code) }}</a>
                                         @endif
+
+                                        @if (($config->module_posts ?? null) != 'active')
+                                        <div class="fw-bold text-danger mb-3">
+                                            <i class="bi bi-info-circle"></i> {{ __('Blog module is not available on website because this module is not active.') }} <a
+                                                href="{{ route('admin.config', ['module' => 'modules']) }}">{{ __('Change') }}</a>
+                                        </div>
+                                        @endif
                                     @endif
 
                                     <div class="mb-2"></div>

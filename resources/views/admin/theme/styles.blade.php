@@ -139,6 +139,33 @@
             </table>
         </div>
 
+        <div class="card-title fs-5 fw-bold mb-1 mt-4">{{ __('Styles for website modules') }}</div>
+        <div class="text-muted small mb-3">
+            <i class="bi bi-info-circle"></i> {{ __('Define styes (fonts, colors, links, text sizes, backgrounds colors...) for website modules (forum, knowledge base, posts...)') }}
+        </div>
+
+        <div class="table-responsive-md">
+            <table class="table table-bordered table-hover">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="float-end ms-2">
+                                <a class="btn btn-primary btn-sm mb-2" href="{{ route('admin.theme.styles.show', ['style' => 'posts']) }}">{{ __('Update style') }}</a>
+                            </div>
+
+                            <div class="fs-6 fw-bold mb-2">
+                                {{ __('Blog / Articles') }}
+                            </div>
+                        </td>
+                    </tr>                   
+                </tbody>
+            </table>
+        </div>
+
+
+        <hr>
+
+
         <div class="clearfix mb-5"></div>
 
         <div class="float-end">

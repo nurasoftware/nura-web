@@ -117,6 +117,7 @@ Route::prefix('account/admin')->name('admin.')->group(function () {
 
     // Theme    
     Route::get('theme', [ThemeController::class, 'index'])->name('theme');
+    Route::put('theme', [ThemeController::class, 'update']);
 
     Route::get('theme/logo', [ThemeController::class, 'logo'])->name('theme.logo');
     Route::post('theme/logo', [ThemeController::class, 'update_logo']);
