@@ -23,15 +23,12 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Cookie;
 use App\Models\Post;
 use App\Models\PostCateg;
 use App\Models\PostTag;
 use App\Models\PostTagItem;
 use App\Models\Config;
 use App\Models\Language;
-use Auth;
 
 class PostController extends Controller
 {
@@ -139,20 +136,7 @@ class PostController extends Controller
         $categ = PostCateg::where('id', $post->categ_id)->where('active', 1)->first();
         if (!$categ) return redirect(route('posts'));
 
-        $comments = PostComment::with('author')->where('post_id', $post->id)->where('status', 'active');
-
         $tags = PostTagItem::with('tag')->where('post_id', $post->id)->get();
-
-        if ((Config::config()->posts_comments_order ?? null) == 'old')
-            $comments = $comments->orderBy('id', 'asc');
-        else
-            $comments = $comments->orderBy('id', 'desc');
-
-        $comments = $comments->paginate(Config::config()->posts_comments_per_page ?? 20);
-
-        // likes enabled
-        if ((Config::config()->posts_likes_disabled ?? null) == 0 && $post->disable_likes != 1) $likes_enabled = true;
-        else $likes_enabled = false;
 
         $related_posts = Post::where('id', '!=', $post->id)
             ->whereNull('deleted_at')
@@ -166,149 +150,14 @@ class PostController extends Controller
 
         // update hits
         Post::where('id', $post->id)->increment('hits');
-
-        // layout
-        if (Config::config()->tpl_posts_post_layout_id ?? null) $layout = TemplateLayout::find(Config::config()->tpl_posts_post_layout_id);
-
+        
         return view('web.post', [
             'post' => $post,
             'content_blocks' => $content_blocks ?? array(),
             'related_posts' => $related_posts,
-            'likes_enabled' => $likes_enabled,
-            'comments' => $comments,
             'tags' => $tags,
-
-            'layout' => $layout ?? null,
-            'layout_top' => $layout->top ?? null,
-            'layout_bottom' => $layout->bottom ?? null,
-            'layout_sidebar' => $layout->sidebar ?? null,
         ]);
     }
-
-
-
-    /**
-     * Process comment
-     */
-    public function comment(Request $request)
-    {
-        if (((Config::config()->module_posts ?? null) != 'active')) return redirect(route('home'));
-
-        $categ_slug = $request->categ_slug;
-        $slug = $request->slug;
-        $id = $request->id;
-        if (!$categ_slug || !$slug) return redirect(route('home'));
-
-        $inputs = $request->all(); // retrieve all of the input data as an array      
-
-        $post = Post::find($id);
-        if (!$post) return redirect(route('home'));
-
-        if ($post->status != 'published') return redirect(route('posts'));
-
-        // check if global comments is disabled
-        if (Config::config()->posts_comments_disabled ?? null) return redirect(route('post', ['lang' => $request->lang, 'categ_slug' => $categ_slug, 'slug' => $slug]) . '#comments');
-
-        // check if comment is disabled
-        if ($post->disable_comments ?? null) return redirect(route('post', ['lang' => $request->lang, 'categ_slug' => $categ_slug, 'slug' => $slug]) . '#comments');
-
-        // check if login is required
-        if ((Config::config()->posts_comments_require_login ?? null) && !Auth::check()) return redirect(route('post', ['lang' => $request->lang, 'categ_slug' => $categ_slug, 'slug' => $slug]) . '#comments')->with('error', 'login_required');
-
-        // check antispam 
-        if (Config::config()->posts_comments_antispam_enabled ?? null) {
-            // Build POST request:
-            $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
-            $recaptcha_secret = Config::config()->google_recaptcha_secret_key ?? null;
-            $recaptcha_response = $request->recaptcha_response;
-
-            // Make and decode POST request:
-            $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
-            $recaptcha = json_decode($recaptcha);
-
-            // Take action based on the score returned:
-            if ($recaptcha->success) {
-                if ($recaptcha->score < 0.5) return redirect(route('post', ['lang' => $request->lang, 'categ_slug' => $categ_slug, 'slug' => $slug]) . '#comments')->with('error', 'recaptcha_error');
-            } else return redirect(route('post', ['lang' => $request->lang, 'categ_slug' => $categ_slug, 'slug' => $slug]) . '#comments')->with('error', 'recaptcha_error');
-        }
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'comment' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect(route('post', ['lang' => $request->lang, 'categ_slug' => $categ_slug, 'slug' => $slug]))
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        if ((Config::config()->posts_comments_require_manual_approve ?? null)  && !Auth::check())
-            $status = 'pending';
-        else
-            $status = 'active';
-
-        PostComment::create([
-            'post_id' => $request->id,
-            'name' => $request->name,
-            'comment' => $request->comment,
-            'status' => $status,
-            'ip' => $request->ip(),
-            'user_id' => Auth::user()->id ?? null
-        ]);
-
-        // recount comments
-        Post::recount_post_comments($post->id);
-
-        if ($status == 'active') $msg = 'comment_added';
-        else $msg = 'comment_pending';
-
-        return redirect(route('post', ['lang' => $request->lang, 'categ_slug' => $categ_slug, 'slug' => $slug]) . '#comments')->with('success', $msg);
-    }
-
-
-    /**
-     * Process like
-     */
-    public function like(Request $request)
-    {
-        if (((Config::config()->module_posts ?? null) != 'active')) return redirect(route('home'));
-
-        $post_id = $request->post_id;
-
-        // check if global rating is disabled
-        if (!(Config::config()->posts_likes_enabled ?? null)) return response('like_disabled');
-
-        // check if like is disabled
-        $post = Post::find($post_id);
-        if (!$post) return response('invalid_content');
-        if ($post->disable_likes == 1) return response('like_disabled');
-
-        $cookie = Cookie::get('post_like_' . $post_id);
-
-        if (!$cookie) {
-            PostLike::create([
-                'post_id' => $post_id,
-                'user_id' => Auth::user()->id ?? null,
-                'created_at' =>  now(),
-                'ip' => $request->ip(),
-            ]);
-
-            // recount likes
-            Post::recount_post_likes($post_id);
-
-            return response('liked')->cookie(
-                'post_like_' . $post_id,
-                1,
-                60 * 24 * 30,
-                '/'
-            );
-        } // end if not exist cookie
-        else {
-            return response('already_liked');
-        }
-    }
-
 
 
     /**

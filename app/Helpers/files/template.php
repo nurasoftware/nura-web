@@ -355,3 +355,23 @@ if (!function_exists('get_menu_link_label')) {
 		return $label ?? null;
 	}
 }
+
+if (!function_exists('get_language_code_from_id')) {
+	function get_language_code_from_id($id)
+	{
+
+		$code = Language::where('id', $id)->value('code');
+
+		return $code;
+	}
+}
+
+if (!function_exists('getRouteLang')) {
+    function getRouteLang()
+    {
+        if (Language::get_active_language()->id == Language::get_default_language()->id)
+            return null;
+        else
+            return Language::get_active_language()->code;
+    }
+}

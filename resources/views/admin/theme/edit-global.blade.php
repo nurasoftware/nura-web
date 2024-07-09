@@ -4,7 +4,7 @@
             <nav aria-label="breadcrumb" class="breadcrumb-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin') }}">{{ __('Dashboard') }}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.template') }}">{{ __('Template builder') }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('admin.theme') }}">{{ __('Template builder') }}</a></li>
                 </ol>
             </nav>
         </div>
@@ -19,7 +19,7 @@
         <div class="row">
 
             <div class="col-12">
-                @include('admin.template.includes.menu-template')
+                @include('admin.theme.includes.menu-theme')
             </div>
 
         </div>
@@ -30,7 +30,7 @@
     <div class="card-body">
 
         <div class="mb-3">
-            @include('admin.template.includes.menu-template-edit')
+            @include('admin.theme.includes.menu-theme-edit')
         </div>
 
         @if ($message = Session::get('success'))
@@ -158,7 +158,7 @@
                                 </div>
 
                                 <div class="col-12 col-xl-4 col-lg-6 col-md-6">
-                                    <label>{{ __('Select style') }} [<a href="{{ route('admin.template.styles') }}">{{ __('Manage styles') }}</a>]</label>
+                                    <label>{{ __('Select style') }} [<a href="{{ route('admin.theme.styles.index') }}">{{ __('Manage styles') }}</a>]</label>
                                     <select name="tpl_notification_navbar_style_id" class="form-select">
                                         @foreach ($styles as $style)
                                             <option @if (($config->tpl_notification_navbar_style_id ?? null) == $style->id) selected @endif value="{{ $style->id }}">{{ $style->label }}</option>
@@ -177,66 +177,7 @@
                                 <div class="form-text">{{ __('Note: notification bar can be sticky only if main navbar navigation is not sticky') }}</div>
                             </div>
 
-                        </div>
-
-
-                        {{--
-                        <hr>
-
-                        <h5 class="fw-bold">{{ __('Show additional custom navigation (developers only)') }}</h5>
-                        <small class="mb-3">{{ __('Custom navigation menu is above the main navigation bar. You can input custom HTML code.') }}</small>
-
-                        <div class="form-group mb-3">
-                            <div class="form-check form-switch">
-                                <input type='hidden' value='' name='tpl_custom_navbar_show'>
-                                <input class="form-check-input" type="checkbox" id="tpl_custom_navbar_show" name="tpl_custom_navbar_show" @if ($config->tpl_custom_navbar_show ?? null) checked @endif>
-                                <label class="form-check-label" for="tpl_custom_navbar_show">{{ __('Show notiffication bar') }}</label>
-                            </div>
-                        </div>
-
-                        <script>
-                            $('#tpl_custom_navbar_show').change(function() {
-                                select = $(this).prop('checked');
-                                if (select)
-                                    document.getElementById('hidden_div_custom_nav').style.display = 'block';
-                                else
-                                    document.getElementById('hidden_div_custom_nav').style.display = 'none';
-                            })
-                        </script>
-
-                        <div id="hidden_div_custom_nav" style="display: @if ($config->tpl_custom_navbar_show ?? null) block @else none @endif">
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>{{ __('Content') }}</label>
-                                        <textarea class="form-control" name="tpl_custom_navbar_content" rows="2">{{ $config->tpl_custom_navbar_content ?? null }}</textarea>
-                                        <div class="text-muted small">{{ __('HTML code is allowed.') }}</div>
-                                    </div>
-                                </div>                                
-
-                                <div class="col-12 col-xl-2 col-lg-4 col-md-6">
-                                    <label>{{ __('Select style') }} [<a href="{{ route('admin.template.styles') }}">{{ __('Manage styles') }}</a>]</label>
-                                    <select name="tpl_custom_navbar_style_id" class="form-select">
-                                        @foreach ($styles as $style)
-                                            <option @if (($config->tpl_custom_navbar_style_id ?? null) == $style->id) selected @endif value="{{ $style->id }}">{{ $style->label }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="text-muted small">{{ __('Style for custom navigation (fonts, sizes, colors, background...)') }}</div>
-                                </div>
-                            </div>
-
-                            <div class="form-group mb-0">
-                                <div class="form-check form-switch">
-                                    <input type='hidden' value='' name='tpl_custom_navbar_sticky'>
-                                    <input class="form-check-input" type="checkbox" id="tpl_custom_navbar_sticky" name="tpl_custom_navbar_sticky" @if ($config->tpl_custom_navbar_sticky ?? null) checked @endif>
-                                    <label class="form-check-label" for="tpl_custom_navbar_sticky">{{ __('Sticky custom navigation') }}</label>
-                                </div>
-                                <div class="form-text">{{ __('Note: Custom navigation bar can be sticky only if main navbar navigation is not sticky') }}</div>
-                            </div>
-
-                        </div>
-                        --}}
+                        </div>                       
 
                     </div>
                 </div>

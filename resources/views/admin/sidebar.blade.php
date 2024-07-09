@@ -54,7 +54,7 @@
                 <li class="sidebar-item @if (($active_menu ?? null) == 'theme') active @endif">
                     <a href="{{ route('admin.theme') }}" class='sidebar-link'>
                         <i class="bi bi-laptop"></i>
-                        <span>{{ __('Appearance') }}</span>
+                        <span>{{ __('Template') }}</span>
                     </a>
                 </li>
 

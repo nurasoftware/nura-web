@@ -64,12 +64,21 @@ class ConfigController extends Controller
             }
         }
 
+        if ($module == 'contact') {
+            $contact_custom_text = array();
+            foreach (Language::get_languages() as $lang) {
+                $contact_custom_text[$lang->id]['lang'] = $lang;
+                $contact_custom_text[$lang->id]['content']  = ConfigLang::get_config($lang->id, 'contact_custom_text');
+            }
+        }
+
         return view('admin.index', [
             'view_file' => 'config.config-' . $module,
             'active_menu' => 'config',
             'active_submenu' => 'config.settings',
             'active_tab' => $module,
 
+            'contact_custom_text' => $contact_custom_text ?? null,
             'site_labels' => $site_labels ?? null, // used in "general" tab
         ]);
     }
@@ -99,11 +108,14 @@ class ConfigController extends Controller
             }
         }
 
-        if ($module == 'permalinks') {
-            $permalinks = array('tag' => $inputs['tag'] ?? 'tag', 'search' => $inputs['search'] ?? 'search', 'profile' => $inputs['profile'] ?? 'profile', 'contact' => $inputs['contact'] ?? 'contact');
-            Config::update_config('permalinks', serialize($permalinks));
-        } else
-            Config::update_config($inputs);
+        if ($request->module == 'contact') {
+            $langs = Language::get_languages();
+            foreach ($langs as $lang) {
+                ConfigLang::update_config($lang->id, 'contact_custom_text', $request['contact_custom_text_' . $lang->id]);
+            }
+        }
+
+        Config::update_config($inputs);
 
         return redirect(route('admin.config', ['module' => $module]))->with('success', 'updated');
     }

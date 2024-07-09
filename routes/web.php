@@ -33,11 +33,8 @@ Route::get('/account', function () {
     } else return redirect(route('login'));
 })->name('account');
 
-
 // Maintenance
 Route::get('/maintenance-mode', [ToolsController::class, 'maintenance'])->name('maintenance');
-
-
 
 foreach (Language::get_active_languages() as $language) {
     if ($language->is_default == 1) {

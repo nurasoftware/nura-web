@@ -1,5 +1,5 @@
 <nav class="nav nav-tabs" id="myTab" role="tablist">
-    <a class="nav-item nav-link @if ($menu_section == 'theme') active @endif" href="{{ route('admin.theme') }}"><i class="bi bi-laptop"></i> {{ __('Theme') }}</a>
+    <a class="nav-item nav-link @if ($menu_section == 'theme') active @endif" href="{{ route('admin.theme') }}"><i class="bi bi-laptop"></i> {{ __('Template') }}</a>
     <a class="nav-item nav-link @if ($menu_section == 'menu') active @endif" href="{{ route('admin.theme.menu') }}"><i class="bi bi-menu-down"></i> {{ __('Menu links') }}</a>
     <a class="nav-item nav-link @if ($menu_section == 'footer') active @endif" href="{{ route('admin.theme.footer') }}"><i class="bi bi-menu-up"></i> {{ __('Footer') }}</a>
     <a class="nav-item nav-link @if ($menu_section=='buttons') active @endif" href="{{ route('admin.theme.buttons.index') }}"><i class="bi bi-check2-square"></i> {{ __('Buttons') }}</a>
